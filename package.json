@@ -1,0 +1,25 @@
+{
+  "name": "secret-roles",
+  "version": "0.0.1",
+  "description": "discord bot that assigns secret roles or something",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tosborne1215/secret-roles.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tosborne1215/secret-roles/issues"
+  },
+  "homepage": "https://github.com/tosborne1215/secret-roles#readme",
+  "dependencies": {
+    "discord.js": "^13.3.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0"
+  }
+}
