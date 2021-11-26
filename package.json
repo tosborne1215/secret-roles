@@ -4,7 +4,10 @@
   "description": "discord bot that assigns secret roles or something",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy-commands": "node src/main/deployment-commands.js",
+    "start": "node src/main/index.js"
+
   },
   "repository": {
     "type": "git",
