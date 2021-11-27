@@ -14,7 +14,7 @@ module.exports = {
 					.setStyle('PRIMARY'),
 			);
 		const message = await interaction.reply({ content: 'Join the session you fucking nerds!', components: [row], fetchReply: true });
-		const collector = message.createMessageComponentCollector({ time: 15000 });
+		const collector = message.createMessageComponentCollector({ time: 20000 });
 
 		collector.on('collect', async i => {
 			await i.deferUpdate({ content: 'Join the session you fucking nerds!' });
@@ -44,7 +44,7 @@ module.exports = {
 			}
 			else {
 				await message.guild.channels.fetch(message.channelId).then(async (channel) => {
-					const messageStr = 'Fuckwads! You need 4 or more people to join!';
+					const messageStr = 'Motherfuckers!! You need 4 or more people to join!';
 					await channel.send(messageStr);
 				});
 			}
@@ -54,15 +54,16 @@ module.exports = {
 
 const dedupeUsers = function(collection) {
 	const existingUsers = {};
-	return collection.filter((value) => {
-		if (existingUsers[value] === 1) {
+	const stuff = collection.filter((value) => {
+		if (existingUsers[value.user.id] === 1) {
 			return false;
 		}
 		else {
-			existingUsers[value] = 1;
+			existingUsers[value.user.id] = 1;
 			return true;
 		}
 	});
+	return stuff;
 };
 
 const LEADER = 'LEADER';
