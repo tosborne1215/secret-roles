@@ -29,13 +29,17 @@ module.exports = {
 			const roles = determineRoles(newCollection);
 			let kingsName = '';
 			if (newCollection.size >= 4) {
-				newCollection.forEach(async (value, index, obj) => {
-					const pickedRole = roles.pop();
-					if (pickedRole === LEADER) {
-						kingsName = value.member.user.username;
+				newCollection.forEach(async (value) => {
+					try {
+						const pickedRole = roles.pop();
+						if (pickedRole === LEADER) {
+							kingsName = value.member.user.username;
+						}
+						const str = `Hey, your role is ${pickedRole}`;
+						await value.user.send({ content: str });
+					} catch (ex) {
+						console.error(`this guy fucked it up ${value.member.user.username}`, ex);
 					}
-					const str = `Hey, your role is ${pickedRole}`;
-					await value.member.send({ content: str });
 				});
 				await message.guild.channels.fetch(message.channelId).then(async (channel) => {
 					const messageStr = `This concludes joining the session. ${kingsName} is your leader. Good luck with that fuckup.`;
