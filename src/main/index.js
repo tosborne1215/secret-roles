@@ -1,13 +1,19 @@
+require('dotenv').config()
+// set this files location to be working directory
+process.chdir('src/main');
+console.log("working directory after "
+          + "changing: " + process.cwd());
+
 // Require the necessary discord.js classes
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-require('dotenv').config()
+
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 client.commands = new Collection();
 
-const commandFiles = fs.readdirSync('./src/main/commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -16,7 +22,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-const eventFiles = fs.readdirSync('./src/main/events').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('events').filter(file => file.endsWith('.js'));
 
 for (const file of eventFiles) {
 	const event = require(`./events/${file}`);
