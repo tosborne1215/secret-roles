@@ -16,12 +16,12 @@ for (const file of commandFiles) {
 }
 const rest = new REST({ version: '9' }).setToken(process.env.TOKEN);
 
-if (process.env.NODE_ENV === 'production' || !!process.env.GUILD_ID) {
+if (process.env.GUILD_ID) {
 	rest.put(Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: commands })
 	.then(() => console.log('Successfully registered application commands.'))
 	.catch(console.error);
 } else {
 	rest.put(Routes.applicationCommands(process.env.CLIENT_ID), { body: commands })
-	.then(() => console.log('Successfully registered application commands.'))
+	.then(() => console.log('Successfully registered application commands. Cache can take up 1h to expired.'))
 	.catch(console.error);
 }
