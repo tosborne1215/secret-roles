@@ -75,7 +75,13 @@ const ASSASSIN = 'ASSASSIN';
 const TRAITOR = 'TRAITOR';
 const GUARDIAN = 'GUARDIAN';
 const determineRoles = function(collection) {
-	const roles = [LEADER, ASSASSIN, ASSASSIN, TRAITOR];
+	const roles = [LEADER, ASSASSIN, ASSASSIN];
+	let randomInt = getRandomInt(2)
+	if (collection.size == 4 || randomInt === 1) {
+		roles.push(GUARDIAN);
+	} else {
+		roles.push(TRAITOR);
+	}
 	if (collection.size >= 5) {
 		roles.push(GUARDIAN);
 	}
@@ -102,4 +108,8 @@ function shuffleArray(array) {
 	}
 
 	return array;
+}
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
 }
