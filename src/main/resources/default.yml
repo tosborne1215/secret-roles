@@ -11,6 +11,8 @@ user.chosen:
 user.joined:
   - "${username} joined the session."
   - "${username} left the session."
+  - "${username} ???? the session."
+  - "${username} fucked the session. It was really gross."
 user.role: "Hey, your role is ${pickedRole}"
 error.not.enough.players:
   - "Motherfuckers!! You need 4 or more people to join!"
