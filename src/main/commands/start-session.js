@@ -20,7 +20,7 @@ module.exports = {
 
 		collector.on('collect', async i => {
 			await i.deferUpdate({ content: getText('session.join') });
-			const messageStr = getText('user.joined', { vars: { username: i.user.username }});
+			const messageStr = getText('user.joined', { vars: { username: i.user.username }, userId: i.user.id});
 			await i.guild.channels.fetch(i.channelId).then(async (channel) => {
 				await channel.send(messageStr);
 			});

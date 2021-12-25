@@ -3,7 +3,7 @@ session.join:
   - "Put the J down and hit the join button!"
 session.conclude: 
   - "This concludes joining the session."
-  - "Ok NOW you can smoke the ganja"
+  - "Ok NOW you can smoke the ganja."
   - "DRAW YOUR HANDS!"
 user.chosen:
   - "${username} is your leader. Good luck with that fuckup."
