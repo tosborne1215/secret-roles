@@ -5,4 +5,4 @@ user.chosen:
 user.joined:
   - "The glorious ${username} has joined the session."
 user.role: 
-  - "Hey, your role is ${pickedRole}"
+  - "Hey, your role is ${role}"

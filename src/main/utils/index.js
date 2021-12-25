@@ -9,7 +9,7 @@ const dedupeUsers = (collection) => {
 			return true;
 		}
 	});
-	return stuff;
+	return collection;
 };
 
 const shuffleArray = (array) => {
