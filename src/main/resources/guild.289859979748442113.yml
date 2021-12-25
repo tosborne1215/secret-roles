@@ -1,4 +1,4 @@
-# This is Ellies Wonderful World
+# This is the test server
 session.join: "Join up"
 session.conclude: "Concludes session"
 error.not.enough.players:
