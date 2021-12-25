@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageActionRow, MessageButton } = require('discord.js');
-const { dedupeUsers } = require('../utils');
+const { dedupeUsers, getText } = require('../utils');
 const { createRoles } = require('../role/creator');
 
 module.exports = {
@@ -15,12 +15,12 @@ module.exports = {
 					.setLabel('Click to join session')
 					.setStyle('PRIMARY'),
 			);
-		const message = await interaction.reply({ content: 'Join the session you fucking nerds!', components: [row], fetchReply: true });
+		const message = await interaction.reply({ content: getText('session.join'), components: [row], fetchReply: true });
 		const collector = message.createMessageComponentCollector({ time: 20000 });
 
 		collector.on('collect', async i => {
-			await i.deferUpdate({ content: 'Join the session you fucking nerds!' });
-			const messageStr = `${i.user.username} joined the session.`;
+			await i.deferUpdate({ content: getText('session.join') });
+			const messageStr = getText('user.joined', { vars: { username: i.user.username }});
 			await i.guild.channels.fetch(i.channelId).then(async (channel) => {
 				await channel.send(messageStr);
 			});
@@ -30,27 +30,30 @@ module.exports = {
 			const newCollection = dedupeUsers(collected);
 			const roles = createRoles(newCollection);
 			let kingsName = '';
+			let kingsUserId = ''
+			const guildId = interaction.guild.id
 			if (newCollection.size >= 4) {
 				newCollection.forEach(async (value) => {
 					try {
 						const pickedRole = roles.pop();
 						if (pickedRole === LEADER) {
 							kingsName = value.member.user.username;
+							kingsUserId = value.member.user.id
 						}
-						const str = `Hey, your role is ${pickedRole}`;
+						const str = getText('user.role', { vars: { role: pickedRole} });
 						await value.user.send({ content: str });
 					} catch (ex) {
 						console.error(`this guy fucked it up ${value.member.user.username}`, ex);
 					}
 				});
 				await message.guild.channels.fetch(message.channelId).then(async (channel) => {
-					const messageStr = `This concludes joining the session. ${kingsName} is your leader. Good luck with that fuckup.`;
+					const messageStr = getText('session.conclude') + getText('user.chosen', { vars: { username: kingsName }, kingsUserId});
 					await channel.send(messageStr);
 				});
 			}
 			else {
 				await message.guild.channels.fetch(message.channelId).then(async (channel) => {
-					const messageStr = 'Motherfuckers!! You need 4 or more people to join!';
+					const messageStr = getText("error.not.enough.players", { guild: guildId });
 					await channel.send(messageStr);
 				});
 			}

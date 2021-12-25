@@ -1,0 +1,9 @@
+session.join: "Join the session you fucking nerds!"
+session.conclude: "This concludes joining the session."
+user.chosen: "${username} is your leader. Good luck with that fuckup."
+user.joined: "${username} joined the session."
+user.role: "Hey, your role is ${pickedRole}"
+error.not.enough.players:
+  - "Motherfuckers!! You need 4 or more people to join!"
+  - "C'mon guys. Get it together."
+  - "JEEZUS. You need 4 or more."

@@ -1,0 +1,5 @@
+# This is Ellies Wonderful World
+session.join: "Join up"
+session.conclude: "Concludes session"
+error.not.enough.players:
+  - "4 or more"

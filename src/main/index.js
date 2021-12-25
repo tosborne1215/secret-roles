@@ -3,11 +3,10 @@ require('dotenv').config()
 process.chdir('src/main');
 console.log("working directory after "
           + "changing: " + process.cwd());
-
+const { getText, getRandomText } = require('./utils');
 // Require the necessary discord.js classes
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
-
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });

@@ -1,0 +1,4 @@
+# this is Sally
+user.chosen: "${username} is your leader. All must bow before him!"
+user.joined: "The glorious ${username} has joined the session."
+user.role: "Hey, your role is ${pickedRole}"
