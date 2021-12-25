@@ -41,6 +41,7 @@ const getText = (key, options) => {
 	const { vars, userId, guild } = options || {}
 
 	let dataArr = {};
+	let defaultText = getYaml('./resources/default.yml');
 	if (!!userId) {
 		dataArr = getYaml(`./resources/user.${userId}.yml`)
 	} else if (!!guild) {
@@ -48,15 +49,16 @@ const getText = (key, options) => {
 	}
 
 	if (!dataArr || !Object.keys(dataArr).includes(key)) {
-		dataArr = getYaml('./resources/default.yml')
+		dataArr = defaultText
 	}
 
-	let data = null
+	let concatenated = null
 	if (Array.isArray(dataArr[key])) {
-		data = dataArr[key][getRandomInt(dataArr[key].length)]
+		concatenated = dataArr[key].concat(defaultText[key])
 	} else {
-		data = dataArr[key]
+		concatenated = [dataArr[key]].concat(defaultText[key])
 	}
+	const data = concatenated[getRandomInt(concatenated.length)]
 
 	return data.interpolate(vars)
 }
