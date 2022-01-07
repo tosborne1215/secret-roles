@@ -46,7 +46,7 @@ const createRandyRoles = function(collection) {
 const createTreacheryRoles = function(collection) {
 	const roles = [LEADER, ASSASSIN, ASSASSIN];
 	const randomInt = getRandomInt(2)
-	if (collection.size == 4 || randomInt === 1) {
+	if (collection.size == 4 && randomInt === 1) {
 		roles.push(GUARDIAN);
 	} else {
 		roles.push(TRAITOR);
