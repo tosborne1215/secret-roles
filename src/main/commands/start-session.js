@@ -15,6 +15,7 @@ module.exports = {
 				.addChoice('Teams of 2 (secret)', 'Team2Secret')
 				.addChoice('Teams of 3 (public)', 'Team3Public')
 				.addChoice('Teams of 3 (private)', 'Team3Private')
+				.addChoice('Special', 'Special')
 		)
 		.setDescription('starts a f*cking session.'),
 	async execute(interaction) {
