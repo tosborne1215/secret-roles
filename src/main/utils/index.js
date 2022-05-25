@@ -1,6 +1,6 @@
 const dedupeUsers = (collection) => {
 	const existingUsers = {};
-	const stuff = collection.filter((value) => {
+	return collection.filter((value) => {
 		if (existingUsers[value.user.id] === 1) {
 			return false;
 		}
@@ -9,7 +9,6 @@ const dedupeUsers = (collection) => {
 			return true;
 		}
 	});
-	return stuff;
 };
 
 const shuffleArray = (array) => {
@@ -22,67 +21,71 @@ const shuffleArray = (array) => {
 	}
 
 	return array;
-}
+};
 
 const getRandomInt = (max) => {
-  return Math.floor(Math.random() * max);
-}
+	return Math.floor(Math.random() * max);
+};
 
 String.prototype.interpolate = function(params) {
 	if (!!params === false) {
-		return this.toString()
+		return this.toString();
 	}
-  const names = Object.keys(params);
-  const vals = Object.values(params);
-  return new Function(...names, `return \`${this}\`;`)(...vals);
-}
+	const names = Object.keys(params);
+	const vals = Object.values(params);
+	return new Function(...names, `return \`${this}\`;`)(...vals);
+};
 
 const getText = (key, options) => {
-	const { vars, userId, guild } = options || {}
+	const { vars, userId, guild } = options || {};
 
 	let dataArr = {};
-	let defaultText = getYaml('./resources/default.yml');
-	if (!!userId) {
-		dataArr = getYaml(`./resources/user.${userId}.yml`)
-	} else if (!!guild) {
-		dataArr = getYaml(`./resources/guild.${guild}.yml`)
+	const defaultText = getYaml('./resources/default.yml');
+	if (userId) {
+		dataArr = getYaml(`./resources/user.${userId}.yml`);
+	}
+	else if (guild) {
+		dataArr = getYaml(`./resources/guild.${guild}.yml`);
 	}
 
 	if (!dataArr || !Object.keys(dataArr).includes(key)) {
-		dataArr = defaultText
+		dataArr = defaultText;
 	}
 
-	let concatenated = null
+	let concatenated = null;
 	if (Array.isArray(dataArr[key])) {
-		concatenated = dataArr[key].concat(defaultText[key])
-	} else {
-		concatenated = [dataArr[key]].concat(defaultText[key])
+		concatenated = dataArr[key].concat(defaultText[key]);
 	}
-	const data = concatenated[getRandomInt(concatenated.length)]
+	else {
+		concatenated = [dataArr[key]].concat(defaultText[key]);
+	}
+	const data = concatenated[getRandomInt(concatenated.length)];
 
-	return data.interpolate(vars)
-}
+	return data.interpolate(vars);
+};
 
 const getYaml = (file) => {
 	const fs = require('fs');
-	const yaml = require('js-yaml')
+	const yaml = require('js-yaml');
 
 	try {
 	    const fileContents = fs.readFileSync(file, 'utf8');
 	    return yaml.load(fileContents);
-	} catch (e) {
-		if (e instanceof Error && e.message.includes("no such file or directory")) {
-			console.log(`${file} not found.`)
-		} else {
+	}
+	catch (e) {
+		if (e instanceof Error && e.message.includes('no such file or directory')) {
+			console.log(`${file} not found.`);
+		}
+		else {
 			console.log(typeof e);
 		}
-	  return null
+	  return null;
 	}
-}
+};
 
 module.exports = {
 	shuffleArray: shuffleArray,
 	dedupeUsers: dedupeUsers,
 	getRandomInt: getRandomInt,
-	getText: getText
-}
+	getText: getText,
+};

@@ -9,6 +9,7 @@ const createOptions = function(gameMode) {
 	case 'Team3Secret':
 	case 'Team2Secret':
 		notificationStrategy = 'private';
+		break;
 	default:
 		notificationStrategy = 'public';
 		break;

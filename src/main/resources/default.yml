@@ -21,5 +21,7 @@ error.not.enough.players:
   - "Motherfuckers!! You need 4 or more people to join!"
   - "C'mon guys. Get it together."
   - "JEEZUS. You need 4 or more."
+error.teams.not.balanced:
+  - "Ugh you dont have enough players for even teams!"
 error.not.implemented:
   - "I'm lazy and havent implemented this game mode. Choose another one."

@@ -57,11 +57,12 @@ module.exports = {
 		collector.on('end', async collected => {
 			const newCollection = dedupeUsers(collected);
 			const response = validateTeamSize(options.gameMode, newCollection.size);
-			if (!response.status) {
+			if (response.status === false) {
 				await message.guild.channels.fetch(message.channelId).then(async (channel) => {
 					const messageStr = getText(response.msg, { guild: guildId });
 					await channel.send(messageStr);
 				});
+				return;
 			}
 
 			switch (options.notificationStrategy) {
@@ -104,16 +105,14 @@ const treacheryAssignerNotifier = async function(interaction, message, interacti
 
 const teamAssignerNotifier = async function(interaction, message, interactionCollection, options) {
 	const teams = createTeams(interactionCollection, options.gameMode);
-	let optional = '';
+	const optional = [];
 	for (const [key, value] of Object.entries(teams)) {
-		console.log(`${key}: ${value}`);
 		const team = [];
 		value.forEach((member) => {
 			team.push(member.member.user.username);
 		});
-
 		if (options.notificationStrategy === 'private') {
-			const message = getText('user.team', {team: team.join(' ')});
+			const message = getText('user.team', { vars: { team: team.join(' ') }});
 			value.forEach(async (member) => {
 				await member.user.send({ content: message });
 			});
@@ -123,7 +122,7 @@ const teamAssignerNotifier = async function(interaction, message, interactionCol
 	}
 
 	await message.guild.channels.fetch(message.channelId).then(async (channel) => {
-		const messageStr = getText('session.conclude') + ' ' + optional.join('\n');
+		const messageStr = getText('session.conclude') + '\n' + optional.join('\n');
 		await channel.send(messageStr);
 	});
 };
