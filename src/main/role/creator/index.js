@@ -4,39 +4,30 @@ const LEADER = 'LEADER';
 const ASSASSIN = 'ASSASSIN';
 const TRAITOR = 'TRAITOR';
 const GUARDIAN = 'GUARDIAN';
+const USURPER = 'USURPER';
 const createRoles = function(collection, gameMode) {
-	let roles = []
-	switch(gameMode) {
-		case 'Randy':
-			roles = createRandyRoles(collection);
-			break;
-		default:
-			roles = createTreacheryRoles(collection);
+	let roles = [];
+	switch (gameMode) {
+	case 'Randy':
+		roles = createRandyRoles(collection);
+		break;
+	case 'Special':
+		roles = createSpecialRoles(collection);
+		break;
+	default:
+		roles = createTreacheryRoles(collection);
 	}
 
 	return shuffleArray(roles);
 };
 
 const createRandyRoles = function(collection) {
-	let roles = [LEADER]
-	console.log(collection.size)
+	const roles = [LEADER];
+	console.log(collection.size);
 	for (let i = collection.size - 1; i > 0; i--) {
-		const randomInt = getRandomInt(3);
-		console.log(randomInt)
-		switch (randomInt) {
-			case 0:
-				console.log(ASSASSIN)
-				roles.push(ASSASSIN)
-				break;
-			case 1:
-			console.log(TRAITOR)
-				roles.push(TRAITOR)
-				break;
-			case 2:
-			console.log(GUARDIAN)
-				roles.push(GUARDIAN)
-				break;
-		}
+		const role = getRandomRole([ASSASSIN, TRAITOR, GUARDIAN, USURPER]);
+		console.log(role);
+		roles.push(role);
 	}
 	// should I do correction if they are all guardians?...nah
 
@@ -45,11 +36,10 @@ const createRandyRoles = function(collection) {
 
 const createTreacheryRoles = function(collection) {
 	const roles = [LEADER, ASSASSIN, ASSASSIN];
-	const randomInt = getRandomInt(2)
-	if (collection.size == 4 && randomInt === 1) {
-		roles.push(GUARDIAN);
+	if (collection.size === 4) {
+		roles.push(getRandomRole([GUARDIAN, TRAITOR]));
 	} else {
-		roles.push(TRAITOR);
+		roles.push(GUARDIAN);
 	}
 	if (collection.size >= 5) {
 		roles.push(GUARDIAN);
@@ -63,9 +53,36 @@ const createTreacheryRoles = function(collection) {
 	if (collection.size >= 8) {
 		roles.push(TRAITOR);
 	}
-	return roles
-}
+	return roles;
+};
+
+const createSpecialRoles = function(collection) {
+	const roles = [LEADER, ASSASSIN, ASSASSIN];
+	if (collection.size === 4) {
+		roles.push(getRandomRole([GUARDIAN, TRAITOR, USURPER]));
+	} else {
+		roles.push(GUARDIAN);
+	}
+	if (collection.size >= 5) {
+		roles.push(getRandomRole([USURPER, TRAITOR]));
+	}
+	if (collection.size >= 6) {
+		roles.push(getRandomRole([GUARDIAN, USURPER, ASSASSIN]));
+	}
+	if (collection.size >= 7) {
+		roles.push(getRandomRole([GUARDIAN, USURPER, ASSASSIN]));
+	}
+	if (collection.size >= 8) {
+		roles.push(getRandomRole([GUARDIAN, USURPER, ASSASSIN]));
+	}
+	return roles;
+};
+
+const getRandomRole = function(roles) {
+	const randomInt = getRandomInt(roles.size);
+	return roles[randomInt];
+};
 
 module.exports = {
-	createRoles: createRoles
-}
+	createRoles: createRoles,
+};
