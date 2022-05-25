@@ -14,10 +14,6 @@ const setupSession = async function(interaction) {
 	else {
 		gameMode = interaction.options.get('type').value;
 	}
-	if (gameMode !== 'Treachery' && gameMode !== 'Randy' && gameMode !== 'Special') {
-		await interaction.reply({ content: getText('error.not.implemented'), fetchReply: true });
-		return;
-	}
 	return createOptions(gameMode);
 };
 
