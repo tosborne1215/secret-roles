@@ -1,7 +1,7 @@
 session.join:
   - "Join the session you fucking nerds! Game mode is ${gameMode}."
   - "Put the J down and hit the join button! Game mode is ${gameMode}."
-session.conclude: 
+session.conclude:
   - "This concludes joining the session."
   - "Ok NOW you can smoke the ganja."
   - "DRAW YOUR HANDS!"
@@ -13,8 +13,10 @@ user.joined:
   - "${username} left the session."
   - "${username} ???? the session."
   - "${username} fucked the session. It was really gross."
-user.role: 
+user.role:
   - "Hey, your role is ${role}"
+user.team:
+  - "Hey, your team is ${team}"
 error.not.enough.players:
   - "Motherfuckers!! You need 4 or more people to join!"
   - "C'mon guys. Get it together."
