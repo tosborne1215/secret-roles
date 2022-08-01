@@ -39,7 +39,7 @@ const createTreacheryRoles = function(collection) {
 	if (collection.size === 4) {
 		roles.push(getRandomRole([GUARDIAN, TRAITOR]));
 	} else {
-		roles.push(GUARDIAN);
+		roles.push(TRAITOR);
 	}
 	if (collection.size >= 5) {
 		roles.push(GUARDIAN);
