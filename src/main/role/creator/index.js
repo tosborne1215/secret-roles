@@ -26,7 +26,6 @@ const createRandyRoles = function(collection) {
 	console.log(collection.size);
 	for (let i = collection.size - 1; i > 0; i--) {
 		const role = getRandomRole([ASSASSIN, TRAITOR, GUARDIAN, USURPER]);
-		console.log(role);
 		roles.push(role);
 	}
 	// should I do correction if they are all guardians?...nah
@@ -38,7 +37,8 @@ const createTreacheryRoles = function(collection) {
 	const roles = [LEADER, ASSASSIN, ASSASSIN];
 	if (collection.size === 4) {
 		roles.push(getRandomRole([GUARDIAN, TRAITOR]));
-	} else {
+	}
+	else {
 		roles.push(TRAITOR);
 	}
 	if (collection.size >= 5) {
@@ -60,7 +60,8 @@ const createSpecialRoles = function(collection) {
 	const roles = [LEADER, ASSASSIN, ASSASSIN];
 	if (collection.size === 4) {
 		roles.push(getRandomRole([GUARDIAN, TRAITOR, USURPER]));
-	} else {
+	}
+	else {
 		roles.push(GUARDIAN);
 	}
 	if (collection.size >= 5) {
@@ -79,7 +80,7 @@ const createSpecialRoles = function(collection) {
 };
 
 const getRandomRole = function(roles) {
-	const randomInt = getRandomInt(roles.size);
+	const randomInt = getRandomInt(roles.length - 1);
 	return roles[randomInt];
 };
 

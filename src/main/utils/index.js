@@ -24,7 +24,9 @@ const shuffleArray = (array) => {
 };
 
 const getRandomInt = (max) => {
-	return Math.floor(Math.random() * max);
+	const randomInt = Math.floor(Math.random() * max);
+	console.log("RandomInt: " + randomInt);
+	return randomInt;
 };
 
 String.prototype.interpolate = function(params) {
