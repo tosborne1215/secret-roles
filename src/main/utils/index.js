@@ -25,7 +25,6 @@ const shuffleArray = (array) => {
 
 const getRandomInt = (max) => {
 	const randomInt = Math.floor(Math.random() * max);
-	console.log("RandomInt: " + randomInt);
 	return randomInt;
 };
 
@@ -71,8 +70,8 @@ const getYaml = (file) => {
 	const yaml = require('js-yaml');
 
 	try {
-	    const fileContents = fs.readFileSync(file, 'utf8');
-	    return yaml.load(fileContents);
+		const fileContents = fs.readFileSync(file, 'utf8');
+		return yaml.load(fileContents);
 	}
 	catch (e) {
 		if (e instanceof Error && e.message.includes('no such file or directory')) {
@@ -81,7 +80,7 @@ const getYaml = (file) => {
 		else {
 			console.log(typeof e);
 		}
-	  return null;
+		return null;
 	}
 };
 

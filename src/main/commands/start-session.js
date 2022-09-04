@@ -17,6 +17,24 @@ const setupSession = async function(interaction) {
 	return createOptions(gameMode);
 };
 
+const join = async function(interaction, button, currentMessage) {
+	await button.deferUpdate();
+	const messageStr = '\n' + getText('user.joined', { vars: { username: button.user.username }, userId: button.user.id });
+	currentMessage += messageStr;
+	await interaction.editReply({ content: currentMessage });
+
+	return currentMessage;
+};
+
+const start = async function(collector, button, interaction, currentMessage) {
+	if (interaction.user.userId != button.user.userId) {
+		await button.reply({ content: 'These buttons aren\'t for you!', ephemeral: true });
+	}
+	else {
+		await button.update({ components: [] });
+		await collector.stop();
+	}
+};
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -39,19 +57,30 @@ module.exports = {
 		const row = new MessageActionRow()
 			.addComponents(
 				new MessageButton()
-					.setCustomId('primary')
+					.setCustomId('join')
 					.setLabel('Click to join session')
 					.setStyle('PRIMARY'),
+				new MessageButton()
+					.setCustomId('start')
+					.setLabel('Start')
+					.setStyle('SECONDARY'),
 			);
-		const message = await interaction.reply({ content: getText('session.join', { vars: { gameMode: options.gameMode } }), components: [row], fetchReply: true });
-		const collector = message.createMessageComponentCollector({ time: 60000 });
+		let currentMessage = getText('session.join', { vars: { gameMode: options.gameMode } });
+		const message = await interaction.reply({ content: currentMessage, components: [row], fetchReply: true });
+		const collector = message.createMessageComponentCollector({ time: 480000 });
 
-		collector.on('collect', async i => {
-			await i.deferUpdate({ content: getText('session.join') });
-			const messageStr = getText('user.joined', { vars: { username: i.user.username }, userId: i.user.id });
-			await i.guild.channels.fetch(i.channelId).then(async (channel) => {
-				await channel.send(messageStr);
-			});
+		collector.on('collect', async button => {
+			switch (button.customId) {
+			case 'join':
+				currentMessage = await join(interaction, button, currentMessage);
+				break;
+			case 'start':
+				await start(collector, button, interaction);
+				break;
+			default:
+				console.error('Button not recognized ' + button.customId);
+				break;
+			}
 		});
 
 		collector.on('end', async collected => {
@@ -66,13 +95,13 @@ module.exports = {
 			}
 
 			switch (options.notificationStrategy) {
-				case 'treachery':
-					await treacheryAssignerNotifier(interaction, message, newCollection, options);
-					break;
-				case 'public':
-				case 'private':
-					await teamAssignerNotifier(interaction, message, newCollection, options);
-					break;
+			case 'treachery':
+				await treacheryAssignerNotifier(interaction, message, newCollection, options);
+				break;
+			case 'public':
+			case 'private':
+				await teamAssignerNotifier(interaction, message, newCollection, options);
+				break;
 			}
 		});
 	},
@@ -89,8 +118,9 @@ const treacheryAssignerNotifier = async function(interaction, message, interacti
 				kingsName = value.member.user.username;
 				kingsUserId = value.member.user.id;
 			}
+
 			const str = getText('user.role', { vars: { role: pickedRole }, userId: value.user.id });
-			await value.user.send({ content: str });
+			await value.followUp({ content: str, ephemeral: true });
 		}
 		catch (ex) {
 			console.error(`this guy fucked it up ${value.member.user.username}`, ex);
@@ -112,11 +142,12 @@ const teamAssignerNotifier = async function(interaction, message, interactionCol
 			team.push(member.member.user.username);
 		});
 		if (options.notificationStrategy === 'private') {
-			const message = getText('user.team', { vars: { team: team.join(' ') }});
+			const messageStr = getText('user.team', { vars: { team: team.join(' ') } });
 			value.forEach(async (member) => {
-				await member.user.send({ content: message });
+				await member.user.send({ content: messageStr });
 			});
-		} else {
+		}
+		else {
 			optional.push(`${key} is ${team.join(',')}`);
 		}
 	}
