@@ -6,10 +6,10 @@ console.log("working directory after "
 const { getText, getRandomText } = require('./utils');
 // Require the necessary discord.js classes
 const fs = require('fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 
 // Create a new client instance
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('commands').filter(file => file.endsWith('.js'));

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { MessageActionRow, MessageButton } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { dedupeUsers, getText } = require('../utils');
 const { createRoles } = require('../role/creator');
 const { createTeams } = require('../team/creator');
@@ -42,28 +42,30 @@ module.exports = {
 		.addStringOption(option =>
 			option.setName('type')
 				.setDescription('Type of session. I.E. Treachery, Randy, or various team options')
-				.addChoice('Treachery', 'Treachery')
-				.addChoice('Randy', 'Randy')
-				.addChoice('Special', 'Special')
-				.addChoice('Teams of 2 (public)', 'Team2Public')
-				.addChoice('Teams of 2 (secret)', 'Team2Secret')
-				.addChoice('Teams of 3 (public)', 'Team3Public')
-				.addChoice('Teams of 3 (secret)', 'Team3Secret'),
+				.addChoices(
+					{ name: 'Treachery', value: 'Treachery' },
+					{ name: 'Randy', value: 'Randy' },
+					{ name: 'Special', value: 'Special' },
+					{ name: 'Teams of 2 (public)', value: 'Team2Public' },
+					{ name: 'Teams of 2 (secret)', value: 'Team2Secret' },
+					{ name: 'Teams of 3 (public)', value: 'Team3Public' },
+					{ name: 'Teams of 3 (secret)', value: 'Team3Seceret' },
+				),
 		)
 		.setDescription('starts a f*cking session.'),
 	async execute(interaction) {
 		const guildId = interaction.guild.id;
 		const options = await setupSession(interaction);
-		const row = new MessageActionRow()
+		const row = new ActionRowBuilder()
 			.addComponents(
-				new MessageButton()
+				new ButtonBuilder()
 					.setCustomId('join')
 					.setLabel('Click to join session')
-					.setStyle('PRIMARY'),
-				new MessageButton()
+					.setStyle(ButtonStyle.Primary),
+				new ButtonBuilder()
 					.setCustomId('start')
 					.setLabel('Start')
-					.setStyle('SECONDARY'),
+					.setStyle(ButtonStyle.Secondary),
 			);
 		let currentMessage = getText('session.join', { vars: { gameMode: options.gameMode } });
 		const message = await interaction.reply({ content: currentMessage, components: [row], fetchReply: true });
